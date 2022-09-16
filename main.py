@@ -38,15 +38,15 @@ async def ping(ctx):
 
 @bot.command()
 async def horario(ctx):
-	await ctx.send(file=discord.File('Images/horario.png'))
+	await ctx.send(file=discord.File('Media/horario.png'))
 
 @bot.command()
 async def mimir(ctx):
-	await ctx.send(file=discord.File('Images/sleepy-sleeping.gif'))
+	await ctx.send(file=discord.File('Media/sleepy-sleeping.gif'))
 
 @bot.command()
 async def spanglish(ctx):
-	await ctx.send(file=discord.File('Images/relaxingcup.gif'))
+	await ctx.send(file=discord.File('Media/relaxingcup.gif'))
 
 @bot.command()
 async def pepe(ctx):
