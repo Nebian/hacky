@@ -4,7 +4,6 @@ import os
 import asyncio
 import random
 from random import choice
-from keep_alive import keep_alive
 
 bot = commands.Bot(command_prefix='$')
 
@@ -75,6 +74,4 @@ async def rolldice(ctx):
         await message.delete()
         await ctx.send("Procces has been canceled because you didn't respond in **30** seconds.")
 
-
-keep_alive()
 bot.run(os.getenv('token'))
