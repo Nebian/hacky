@@ -68,23 +68,21 @@ async def on_message(message):
     await bot.process_commands(message)
 
 
-@bot.event
-async def on_member_join(member):
-    message = "Este mensaje debería llegar al DM"
-    await member.send(message)
-
-
 @bot.command()
 async def ping(ctx):
     await ctx.send(f'**Pong!** Latency {round(bot.latency * 1000)}ms')
 
-
+"""
+@bot.event
+async def on_member_join(member):
+    message = "Este mensaje debería llegar al DM"
+    await member.send(message)
+    
 @bot.command()
 async def embed(ctx):
     emessage = discord.Embed(title="Sample Embed", url="https://realdrewdata.medium.com/", description="This is an embed that will show how to build an embed and the different components", color=0xFF5733)
     await ctx.send(embed=emessage)
 
-"""
 @bot.command()
 async def reactmessagerol(ctx):
     emessage = discord.Embed(title="Reacciona con la letra correspondiente a tu clase.",
