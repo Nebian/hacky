@@ -27,11 +27,39 @@ async def change_status():
 
 
 @bot.event
+async def on_raw_reaction_add(payload):
+    channel_id = 1021129934749585459
+    message_id = 1021169218252722346
+
+    if channel_id == payload.channel_id and message_id == payload.message_id:
+
+        guild = bot.get_guild(int(payload.guild_id))
+
+        # get role
+        if payload.emoji == discord.PartialEmoji.from_str('🇦'):
+            role = discord.utils.get(guild.roles, name="ASIX-A")
+            print(role)
+            await payload.member.add_roles(role, reason="self-role reaction")
+        elif payload.emoji == discord.PartialEmoji.from_str('🇧'):
+            role = discord.utils.get(guild.roles, name="ASIX-B")
+            print(role)
+            await payload.member.add_roles(role, reason="self-role reaction")
+        elif payload.emoji == discord.PartialEmoji.from_str('🇨'):
+            role = discord.utils.get(guild.roles, name="ASIX-C")
+            print(role)
+            await payload.member.add_roles(role, reason="self-role reaction")
+        elif payload.emoji == discord.PartialEmoji.from_str("<:itb:1020051101044723722>"):
+            role = discord.utils.get(guild.roles, name="Profesor")
+            print(role)
+            await payload.member.add_roles(role, reason="self-role reaction")
+
+
+@bot.event
 async def on_message(message):
     if message.author == bot.user:
         return
 
-    if random.randint(1, 100) == 22:
+    if random.randint(1, 200) == 69:
         await message.channel.send('Tu argumento no tiene sentido.', reference=message, mention_author=False)
 
     if 'hola' in message.content.lower():
@@ -40,14 +68,46 @@ async def on_message(message):
     await bot.process_commands(message)
 
 
+@bot.event
+async def on_member_join(member):
+    message = "Este mensaje debería llegar al DM"
+    await member.send(message)
+
+
 @bot.command()
 async def ping(ctx):
     await ctx.send(f'**Pong!** Latency {round(bot.latency * 1000)}ms')
 
 
 @bot.command()
-async def horario(ctx):
-    await ctx.send(file=discord.File('Media/horario.png'))
+async def embed(ctx):
+    emessage = discord.Embed(title="Sample Embed", url="https://realdrewdata.medium.com/", description="This is an embed that will show how to build an embed and the different components", color=0xFF5733)
+    await ctx.send(embed=emessage)
+
+"""
+@bot.command()
+async def reactmessagerol(ctx):
+    emessage = discord.Embed(title="Reacciona con la letra correspondiente a tu clase.",
+                             description="Atención: Escoge el rol de tu clase a la primera porque sólo lo podrás escoger una vez. Para "
+                                         "cambiarlo tendrás que solicitárselo a un moderador/administrador.\n\nASIX-A    🇦\nASIX-B   🇧\nASIX-C   "
+                                         "🇨\nProfesor  <:itb:1020051101044723722>", color=0x332C9C)
+    await ctx.send(embed=emessage)
+"""
+
+
+@bot.command()
+async def horarioA(ctx):
+    await ctx.send(file=discord.File('Media/horarioA.png'))
+
+
+@bot.command()
+async def horarioB(ctx):
+    await ctx.send(file=discord.File('Media/horarioB.png'))
+
+
+@bot.command()
+async def horarioC(ctx):
+    await ctx.send(file=discord.File('Media/horarioC.png'))
 
 
 @bot.command()
