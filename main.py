@@ -10,7 +10,7 @@ with open("config.json") as json_data_file:
     cfg = json.load(json_data_file)
 
 intents = discord.Intents.all()
-bot = commands.Bot(command_prefix='¡', intents=intents)
+bot = commands.Bot(command_prefix='$', intents=intents)
 
 status = ['Hackeando el ITB']
 
