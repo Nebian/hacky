@@ -10,7 +10,7 @@ with open("config.json") as json_data_file:
     cfg = json.load(json_data_file)
 
 intents = discord.Intents.all()
-bot = commands.Bot(command_prefix='$', intents=intents)
+bot = commands.Bot(command_prefix='¡', intents=intents)
 
 status = ['Hackeando el ITB']
 
@@ -29,7 +29,7 @@ async def change_status():
 @bot.event
 async def on_raw_reaction_add(payload):
     channel_id = 1021129934749585459
-    message_id = 1021169218252722346
+    message_id = 1021469640502825020
 
     if channel_id == payload.channel_id and message_id == payload.message_id:
 
@@ -37,15 +37,23 @@ async def on_raw_reaction_add(payload):
 
         # get role
         if payload.emoji == discord.PartialEmoji.from_str('🇦'):
-            role = discord.utils.get(guild.roles, name="ASIX-A")
+            role = discord.utils.get(guild.roles, name="ASIX-1A")
             print(role)
             await payload.member.add_roles(role, reason="self-role reaction")
         elif payload.emoji == discord.PartialEmoji.from_str('🇧'):
-            role = discord.utils.get(guild.roles, name="ASIX-B")
+            role = discord.utils.get(guild.roles, name="ASIX-1B")
             print(role)
             await payload.member.add_roles(role, reason="self-role reaction")
         elif payload.emoji == discord.PartialEmoji.from_str('🇨'):
-            role = discord.utils.get(guild.roles, name="ASIX-C")
+            role = discord.utils.get(guild.roles, name="ASIX-1C")
+            print(role)
+            await payload.member.add_roles(role, reason="self-role reaction")
+        elif payload.emoji == discord.PartialEmoji.from_str('🅰️'):
+            role = discord.utils.get(guild.roles, name="ASIX-2A")
+            print(role)
+            await payload.member.add_roles(role, reason="self-role reaction")
+        elif payload.emoji == discord.PartialEmoji.from_str('🅱️'):
+            role = discord.utils.get(guild.roles, name="ASIX-2B")
             print(role)
             await payload.member.add_roles(role, reason="self-role reaction")
         elif payload.emoji == discord.PartialEmoji.from_str("<:itb:1020051101044723722>"):
@@ -87,11 +95,11 @@ async def embed(ctx):
 async def reactmessagerol(ctx):
     emessage = discord.Embed(title="Reacciona con la letra correspondiente a tu clase.",
                              description="Atención: Escoge el rol de tu clase a la primera porque sólo lo podrás escoger una vez. Para "
-                                         "cambiarlo tendrás que solicitárselo a un moderador/administrador.\n\nASIX-A    🇦\nASIX-B   🇧\nASIX-C   "
-                                         "🇨\nProfesor  <:itb:1020051101044723722>", color=0x332C9C)
+                                         "cambiarlo tendrás que solicitárselo a un moderador/administrador.\n\nASIX-1A    🇦\nASIX-1B   🇧\nASIX-1C   "
+                                         "🇨\nASIX-2A    🅰️\nASIX-2B    🅱️\nProfesor  <:itb:1020051101044723722>", color=0x332C9C)
     await ctx.send(embed=emessage)
-"""
 
+"""
 
 @bot.command()
 async def horarioA(ctx):
