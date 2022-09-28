@@ -4,7 +4,9 @@ import os
 import asyncio
 import random
 from random import choice
+from authentication import auth
 import json
+
 
 with open("config.json") as json_data_file:
     cfg = json.load(json_data_file)
@@ -79,6 +81,12 @@ async def on_message(message):
 @bot.command()
 async def ping(ctx):
     await ctx.send(f'**Pong!** Latency {round(bot.latency * 1000)}ms')
+
+
+@bot.command()
+async def oauth(ctx):
+    auth()
+
 
 """
 @bot.event
