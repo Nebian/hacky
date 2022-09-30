@@ -128,5 +128,8 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-#Secret files
+# Secret files
 #config.json
+
+# Other files
+LICENSE
