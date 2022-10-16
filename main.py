@@ -72,9 +72,6 @@ async def on_message(message):
     if random.randint(1, 200) == 69:
         await message.channel.send('Tu argumento no tiene sentido.', reference=message, mention_author=False)
 
-    if 'hola' in message.content.lower():
-        await message.channel.send('¡Pa ti mi cola!', reference=message, mention_author=False)
-
     await bot.process_commands(message)
 
 
