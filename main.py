@@ -1,14 +1,11 @@
-import enum
-
 import discord
 from discord.app_commands import Choice
 from discord.ext import commands, tasks
 from discord import app_commands
-import os
-import asyncio
 import random
 from random import choice
 import json
+import enum
 
 
 with open("config.json") as json_data_file:
@@ -86,76 +83,47 @@ async def on_message(message):
     await bot.process_commands(message)
 
 
-@bot.tree.command(name="ping")
+@bot.tree.command(name="ping", description="Prints the ping between discord and bot server")
 async def ping(interaction: discord.Interaction):
     await interaction.response.send_message(f"**Pong!** Latency {round(bot.latency * 1000)}ms", ephemeral=True)
 
 
 class Ciclos(enum.Enum):
-    ASIXA = 1
-    ASIXB = 2
-    ASIXC = 3
+    ASIX1A = 1
+    ASIX1B = 2
+    ASIX1C = 3
+    ASIX2A = 4
+    ASIX2B = 5
 
 
-@bot.tree.command(name="horario")
-@app_commands.describe(horarios='Horarios disponibles')
-async def horario(interaction: discord.Interaction, horarios: Ciclos):
-    await interaction.response.send_message(file=discord.File(f'Media/horario{horarios.name}.png'))
+@bot.tree.command(name="schedule", description="Shows the schedule of the selected class")
+@app_commands.describe(schedules='Available schedules')
+async def schedule(interaction: discord.Interaction, schedules: Ciclos):
+    await interaction.response.send_message(file=discord.File(f'Media/horarios/horario{schedules.name}.png'))
 
-"""
-@bot.tree.command(name="horario")
-@app_commands.describe(ciclos='Horarios disponibles')
-@app_commands.choices(ciclos=[
-    Choice(name='ASIXA', value=1),
-    Choice(name='ASIXB', value=1),
-    Choice(name='ASIXC', value=1),
+
+@bot.tree.command(name="sleepy", description="Sends a sleepy Tom gif")
+async def sleepy(interaction: discord.Interaction):
+    await interaction.response.send_message(file=discord.File('Media/sleepy-sleeping.gif'))
+
+
+@bot.tree.command(name="pepe", description="Sends a video that explains the history of pepe")
+async def pepe(interaction: discord.Interaction):
+    await interaction.response.send_message('https://www.youtube.com/watch?v=mxpbwpU9HAo&ab_channel=theScoreesports')
+
+
+@bot.tree.command(name="rolldice", description="Roll a dice")
+@app_commands.describe(dices="Available dices")
+@app_commands.choices(dices=[
+    Choice(name='4', value=1),
+    Choice(name='6', value=2),
+    Choice(name='8', value=3),
+    Choice(name='10', value=4),
+    Choice(name='12', value=5),
+    Choice(name='20', value=6),
 ])
-async def horario(interaction: discord.Interaction, ciclos: Choice[int]):
-    await interaction.response.send_message(file=discord.File(f'Media/horario{ciclos.name}.png'))
-"""
-
-@bot.command()
-async def horarioB(ctx):
-    await ctx.send(file=discord.File('Media/horarioASIXB.png'))
-
-
-@bot.command()
-async def horarioC(ctx):
-    await ctx.send(file=discord.File('Media/horarioASIXC.png'))
-
-
-@bot.command()
-async def mimir(ctx):
-    await ctx.send(file=discord.File('Media/sleepy-sleeping.gif'))
-
-
-@bot.command()
-async def pepe(ctx):
-    await ctx.send('https://www.youtube.com/watch?v=mxpbwpU9HAo&ab_channel=theScoreesports')
-
-
-@bot.command()
-async def rolldice(ctx):
-    message = await ctx.send("Choose a number:\n**4**, **6**, **8**, **10**, **12**, **20** ")
-
-    def check(m):
-        return m.author == ctx.author
-
-    try:
-        message = await bot.wait_for("message", check=check, timeout=30.0)
-        m = message.content
-
-        if m != "4" and m != "6" and m != "8" and m != "10" and m != "12" and m != "20":
-            await ctx.send("Sorry, invalid choice.")
-            return
-
-        coming = await ctx.send("Here it comes...")
-        await asyncio.sleep(1)
-        await coming.delete()
-        await ctx.send(f"**{random.randint(1, int(m))}**")
-    except asyncio.TimeoutError:
-        await message.delete()
-        await ctx.send("Procces has been canceled because you didn't respond in **30** seconds.")
+async def rolldice(interaction: discord.Interaction, dices: Choice[int]):
+    await interaction.response.send_message(f'**{random.randint(1, int({dices.name}))}**')
 
 
 bot.run(cfg['token'])
