@@ -4,6 +4,7 @@ from discord.ext import commands, tasks
 from discord import app_commands
 import random
 from random import choice
+from typing import Literal
 import json
 import enum
 
@@ -114,16 +115,7 @@ async def pepe(interaction: discord.Interaction):
 
 @bot.tree.command(name="rolldice", description="Roll a dice")
 @app_commands.describe(dices="Available dices")
-@app_commands.choices(dices=[
-    Choice(name='4', value=1),
-    Choice(name='6', value=2),
-    Choice(name='8', value=3),
-    Choice(name='10', value=4),
-    Choice(name='12', value=5),
-    Choice(name='20', value=6),
-])
-async def rolldice(interaction: discord.Interaction, dices: Choice[int]):
-    await interaction.response.send_message(f'**{random.randint(1, int(dices.name))}**')
-
+async def fruit(interaction: discord.Interaction, dices: Literal['4', '6', '8', '10', '12', '20']):
+    await interaction.response.send_message(f'It\'s a **{random.randint(1, int(dices))}**!')
 
 bot.run(cfg['token'])
