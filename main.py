@@ -1,18 +1,20 @@
+import enum
+
 import discord
+from discord.app_commands import Choice
 from discord.ext import commands, tasks
+from discord import app_commands
 import os
 import asyncio
 import random
 from random import choice
-from authentication import auth
 import json
 
 
 with open("config.json") as json_data_file:
     cfg = json.load(json_data_file)
 
-intents = discord.Intents.all()
-bot = commands.Bot(command_prefix='$', intents=intents)
+bot = commands.Bot(command_prefix='$', owner_id=295498594604154890, intents=discord.Intents.all())
 
 status = ['Hackeando el ITB']
 
@@ -21,6 +23,15 @@ status = ['Hackeando el ITB']
 async def on_ready():
     change_status.start()
     print('Captain Teemo on duty! {0.user}'.format(bot))
+
+
+@bot.command()
+async def resync(ctx):
+    try:
+        synced = await bot.tree.sync()
+        print(f"Synced {len(synced)} command(s)")
+    except Exception as e:
+        print(e)
 
 
 @tasks.loop(seconds=20)
@@ -75,60 +86,47 @@ async def on_message(message):
     await bot.process_commands(message)
 
 
-@bot.command()
-async def ping(ctx):
-    await ctx.send(f'**Pong!** Latency {round(bot.latency * 1000)}ms')
+@bot.tree.command(name="ping")
+async def ping(interaction: discord.Interaction):
+    await interaction.response.send_message(f"**Pong!** Latency {round(bot.latency * 1000)}ms", ephemeral=True)
 
 
-@bot.command()
-async def oauth(ctx):
-    auth()
+class Ciclos(enum.Enum):
+    ASIXA = 1
+    ASIXB = 2
+    ASIXC = 3
 
 
-"""
-@bot.event
-async def on_member_join(member):
-    message = "Este mensaje debería llegar al DM"
-    await member.send(message)
-    
-@bot.command()
-async def embed(ctx):
-    emessage = discord.Embed(title="Sample Embed", url="https://realdrewdata.medium.com/", description="This is an embed that will show how to build an embed and the different components", color=0xFF5733)
-    await ctx.send(embed=emessage)
-
-@bot.command()
-async def reactmessagerol(ctx):
-    emessage = discord.Embed(title="Reacciona con la letra correspondiente a tu clase.",
-                             description="Atención: Escoge el rol de tu clase a la primera porque sólo lo podrás escoger una vez. Para "
-                                         "cambiarlo tendrás que solicitárselo a un moderador/administrador.\n\nASIX-1A    🇦\nASIX-1B   🇧\nASIX-1C   "
-                                         "🇨\nASIX-2A    🅰️\nASIX-2B    🅱️\nProfesor  <:itb:1020051101044723722>", color=0x332C9C)
-    await ctx.send(embed=emessage)
+@bot.tree.command(name="horario")
+@app_commands.describe(horarios='Horarios disponibles')
+async def horario(interaction: discord.Interaction, horarios: Ciclos):
+    await interaction.response.send_message(file=discord.File(f'Media/horario{horarios.name}.png'))
 
 """
-
-@bot.command()
-async def horarioA(ctx):
-    await ctx.send(file=discord.File('Media/horarioA.png'))
-
+@bot.tree.command(name="horario")
+@app_commands.describe(ciclos='Horarios disponibles')
+@app_commands.choices(ciclos=[
+    Choice(name='ASIXA', value=1),
+    Choice(name='ASIXB', value=1),
+    Choice(name='ASIXC', value=1),
+])
+async def horario(interaction: discord.Interaction, ciclos: Choice[int]):
+    await interaction.response.send_message(file=discord.File(f'Media/horario{ciclos.name}.png'))
+"""
 
 @bot.command()
 async def horarioB(ctx):
-    await ctx.send(file=discord.File('Media/horarioB.png'))
+    await ctx.send(file=discord.File('Media/horarioASIXB.png'))
 
 
 @bot.command()
 async def horarioC(ctx):
-    await ctx.send(file=discord.File('Media/horarioC.png'))
+    await ctx.send(file=discord.File('Media/horarioASIXC.png'))
 
 
 @bot.command()
 async def mimir(ctx):
     await ctx.send(file=discord.File('Media/sleepy-sleeping.gif'))
-
-
-@bot.command()
-async def spanglish(ctx):
-    await ctx.send(file=discord.File('Media/relaxingcup.gif'))
 
 
 @bot.command()
