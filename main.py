@@ -123,7 +123,7 @@ async def pepe(interaction: discord.Interaction):
     Choice(name='20', value=6),
 ])
 async def rolldice(interaction: discord.Interaction, dices: Choice[int]):
-    await interaction.response.send_message(f'**{random.randint(1, int({dices.name}))}**')
+    await interaction.response.send_message(f'**{random.randint(1, int(dices.name))}**')
 
 
 bot.run(cfg['token'])
