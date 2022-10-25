@@ -77,6 +77,7 @@ async def on_raw_reaction_add(payload):
             await payload.member.add_roles(role, reason="self-role reaction")
 """
 
+
 class ClassSelectASIX(discord.ui.Select):
     def __init__(self):
         options = [
@@ -246,4 +247,4 @@ async def rolldice(interaction: discord.Interaction, dices: Literal['4', '6', '8
     await interaction.response.send_message(f"It\'s a **{random.randint(1, int(dices))}**!")
 
 
-bot.run(cfg['test-token'])
+bot.run(cfg['token'])
