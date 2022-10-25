@@ -18,7 +18,7 @@ bot = commands.Bot(command_prefix='¡', owner_id=295498594604154890, intents=dis
 
 status = ['Hackeando el ITB']
 MANAGEMENT_CHANNEL = 1034529648857595914
-GUILD = 730042282182443108
+GUILD = 1018310672058155160
 
 
 @bot.event
