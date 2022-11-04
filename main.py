@@ -1,7 +1,6 @@
 import asyncio
 
 import discord
-from discord.app_commands import Choice
 from discord.ext import commands, tasks
 from discord import app_commands
 import random
@@ -14,7 +13,7 @@ import enum
 with open("config.json") as json_data_file:
     cfg = json.load(json_data_file)
 
-bot = commands.Bot(command_prefix='¡', owner_id=295498594604154890, intents=discord.Intents.all())
+bot = commands.Bot(command_prefix='$', owner_id=295498594604154890, intents=discord.Intents.all())
 
 status = ['Hackeando el ITB']
 MANAGEMENT_CHANNEL = 1034529648857595914
@@ -39,43 +38,6 @@ async def resync(ctx):
 @tasks.loop(seconds=20)
 async def change_status():
     await bot.change_presence(activity=discord.Game(choice(status)))
-
-"""
-@bot.event
-async def on_raw_reaction_add(payload):
-    channel_id = 1021129934749585459
-    message_id = 1021469640502825020
-
-    if channel_id == payload.channel_id and message_id == payload.message_id:
-
-        guild = bot.get_guild(int(payload.guild_id))
-
-        # get role
-        if payload.emoji == discord.PartialEmoji.from_str('🇦'):
-            role = discord.utils.get(guild.roles, name="ASIX-1A")
-            print(role)
-            await payload.member.add_roles(role, reason="self-role reaction")
-        elif payload.emoji == discord.PartialEmoji.from_str('🇧'):
-            role = discord.utils.get(guild.roles, name="ASIX-1B")
-            print(role)
-            await payload.member.add_roles(role, reason="self-role reaction")
-        elif payload.emoji == discord.PartialEmoji.from_str('🇨'):
-            role = discord.utils.get(guild.roles, name="ASIX-1C")
-            print(role)
-            await payload.member.add_roles(role, reason="self-role reaction")
-        elif payload.emoji == discord.PartialEmoji.from_str('🅰️'):
-            role = discord.utils.get(guild.roles, name="ASIX-2A")
-            print(role)
-            await payload.member.add_roles(role, reason="self-role reaction")
-        elif payload.emoji == discord.PartialEmoji.from_str('🅱️'):
-            role = discord.utils.get(guild.roles, name="ASIX-2B")
-            print(role)
-            await payload.member.add_roles(role, reason="self-role reaction")
-        elif payload.emoji == discord.PartialEmoji.from_str("<:itb:1020051101044723722>"):
-            role = discord.utils.get(guild.roles, name="Profesor")
-            print(role)
-            await payload.member.add_roles(role, reason="self-role reaction")
-"""
 
 
 class ClassSelectASIX(discord.ui.Select):
@@ -181,6 +143,34 @@ class SelectViewClass(discord.ui.View):
 @bot.tree.command(name="autoroles_class", description="Select the role of your class")
 async def autoroles_class(interaction: discord.Interaction):
     await interaction.response.send_message(f'Autoroles de Clase', view=SelectViewClass(), ephemeral=True)
+
+
+class ThematicRoles(discord.ui.Select):
+    def __init__(self):
+        options = [
+            discord.SelectOption(label="Gamer", emoji="🎮"),
+            discord.SelectOption(label="Otaku", emoji="🚿"),
+            discord.SelectOption(label="Birras", emoji="🍻")
+            ]
+        super().__init__(placeholder="Roles", max_values=3, min_values=1, options=options)
+
+    async def callback(self, interaction: discord.Interaction):
+        guild = bot.get_guild(GUILD)
+        for i, value in enumerate(self.values):
+            role = discord.utils.get(guild.roles, name=self.values[i])
+            await interaction.user.add_roles(role, reason="self-role selection")
+        await interaction.response.send_message(f"You now have the role(s) {self.values}.", ephemeral=True)
+
+
+class SelectViewThematic(discord.ui.View):
+    def __init__(self):
+        super().__init__()
+        self.add_item(ThematicRoles())
+
+
+@bot.tree.command(name="autoroles_thematic", description="Select the thematic roles you want to have.")
+async def autoroles_thematic(interaction: discord.Interaction):
+    await interaction.response.send_message(f'Autoroles Temáticos', view=SelectViewThematic(), ephemeral=True)
 
 
 @bot.tree.command(name="embed_autoroles_class", description="Send an embed explaining the autoroles_class usage")
