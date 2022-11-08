@@ -55,7 +55,7 @@ class ClassSelectASIX(discord.ui.Select):
         guild = bot.get_guild(GUILD)
         role = discord.utils.get(guild.roles, name=self.values[0])
         await interaction.user.add_roles(role, reason="self-role selection")
-        await interaction.response.send_message(f"If you can see this message something went wrong, send a DM to @Nebian#2817", ephemeral=True)
+        await interaction.response.send_message(f"If you can't see the other channels, send a DM to @Nebian#2817", ephemeral=True)
 
 
 class ClassSelectDAM(discord.ui.Select):
@@ -73,7 +73,7 @@ class ClassSelectDAM(discord.ui.Select):
         guild = bot.get_guild(GUILD)
         role = discord.utils.get(guild.roles, name=self.values[0])
         await interaction.user.add_roles(role, reason="self-role selection")
-        await interaction.response.send_message(f"If you can see this message something went wrong, send a DM to @Nebian#2817", ephemeral=True)
+        await interaction.response.send_message(f"If you can't see the other channels, send a DM to @Nebian#2817", ephemeral=True)
 
 
 class ClassSelectDAW(discord.ui.Select):
@@ -88,7 +88,7 @@ class ClassSelectDAW(discord.ui.Select):
         guild = bot.get_guild(GUILD)
         role = discord.utils.get(guild.roles, name=self.values[0])
         await interaction.user.add_roles(role, reason="self-role selection")
-        await interaction.response.send_message(f"If you can see this message something went wrong, send a DM to @Nebian#2817", ephemeral=True)
+        await interaction.response.send_message(f"If you can't see the other channels, send a DM to @Nebian#2817", ephemeral=True)
 
 
 class ClassSelectA3D(discord.ui.Select):
@@ -103,7 +103,7 @@ class ClassSelectA3D(discord.ui.Select):
         guild = bot.get_guild(GUILD)
         role = discord.utils.get(guild.roles, name=self.values[0])
         await interaction.user.add_roles(role, reason="self-role selection")
-        await interaction.response.send_message(f"If you can see this message something went wrong, send a DM to @Nebian#2817", ephemeral=True)
+        await interaction.response.send_message(f"If you can't see the other channels, send a DM to @Nebian#2817", ephemeral=True)
 
 
 class ClassSelectSMX(discord.ui.Select):
@@ -127,7 +127,7 @@ class ClassSelectSMX(discord.ui.Select):
         guild = bot.get_guild(GUILD)
         role = discord.utils.get(guild.roles, name=self.values[0])
         await interaction.user.add_roles(role, reason="self-role selection")
-        await interaction.response.send_message(f"If you can see this message something went wrong, send a DM to @Nebian#2817", ephemeral=True)
+        await interaction.response.send_message(f"If you can't see the other channels, send a DM to @Nebian#2817", ephemeral=True)
 
 
 class SelectViewClass(discord.ui.View):
