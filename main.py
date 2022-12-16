@@ -1,5 +1,3 @@
-import asyncio
-
 import discord
 from discord.ext import commands, tasks
 from discord import app_commands
@@ -7,13 +5,16 @@ import random
 from random import choice
 from typing import Literal
 import json
-import enum
 
 
-with open("config.json") as json_data_file:
-    cfg = json.load(json_data_file)
+with open("config.json") as file:
+    cfg = json.load(file)
 
-bot = commands.Bot(command_prefix='$', owner_id=295498594604154890, intents=discord.Intents.all())
+with open("Data/roles.json") as file:
+    roles_clase = json.load(file)
+
+
+bot = commands.Bot(command_prefix='¡', owner_id=295498594604154890, intents=discord.Intents.all())
 
 status = ['Hackeando el ITB']
 MANAGEMENT_CHANNEL = 1034529648857595914
@@ -23,7 +24,7 @@ GUILD = 1018310672058155160
 @bot.event
 async def on_ready():
     change_status.start()
-    print('Captain Teemo on duty! {0.user}'.format(bot))
+    print("Captain Teemo on duty! {0.user}".format(bot))
 
 
 @bot.command()
@@ -220,18 +221,18 @@ async def ping(interaction: discord.Interaction):
     await interaction.response.send_message(f"**Pong!** Latency {round(bot.latency * 1000)}ms", ephemeral=True)
 
 
-class Ciclos(enum.Enum):
-    ASIX1A = 1
-    ASIX1B = 2
-    ASIX1C = 3
-    ASIX2A = 4
-    ASIX2B = 5
-
-
-@bot.tree.command(name="schedule", description="Shows the schedule of the selected class")
-@app_commands.describe(schedules="Available schedules")
-async def schedule(interaction: discord.Interaction, schedules: Ciclos):
-    await interaction.response.send_message(file=discord.File(f'Media/horarios/horario{schedules.name}.png'))
+@bot.tree.command(name="schedule", description="Shows the schedule of your class")
+@app_commands.describe(schedule="Class schedule you would want to see")
+async def show_schedule(interaction: discord.Interaction, schedule: str = None):
+    if schedule is None:
+        roles = interaction.user.roles
+        for role in roles:
+            if str(role) in roles_clase['roles']:
+                print(role)
+                await interaction.response.send_message(file=discord.File(f'Media/schedules/schedule{role}.png'))
+                break
+    else:
+        await interaction.response.send_message(file=discord.File(f'Media/schedules/schedule{schedule}.png'))
 
 
 @bot.tree.command(name="sleepy", description="Sends a sleepy Tom gif")
@@ -250,4 +251,4 @@ async def rolldice(interaction: discord.Interaction, dices: Literal['4', '6', '8
     await interaction.response.send_message(f"It\'s a **{random.randint(1, int(dices))}**!")
 
 
-bot.run(cfg['token'])
+bot.run(cfg['test-token'])
