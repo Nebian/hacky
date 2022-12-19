@@ -164,9 +164,11 @@ class ThematicRoles(discord.ui.Select):
             discord.SelectOption(label="Otaku", emoji="🚿",
                                  description="This role allows you to see the anime channel."),
             discord.SelectOption(label="Birras", emoji="🍻",
-                                 description="This role will allow other users to mention you.")
+                                 description="This role will allow other users to mention you."),
+            discord.SelectOption(label="Furro", emoji="<furro:1054413958687228027>",
+                                 description="This role will allow you to see the Furros channel.")
             ]
-        super().__init__(placeholder="Roles", max_values=3, min_values=1, options=options)
+        super().__init__(placeholder="Roles", max_values=4, min_values=1, options=options)
 
     async def callback(self, interaction: discord.Interaction):
         guild = bot.get_guild(GUILD)
