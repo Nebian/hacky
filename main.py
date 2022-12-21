@@ -194,8 +194,9 @@ async def autoroles_thematic(interaction: discord.Interaction):
 @app_commands.describe(ch="Channel to send")
 async def embed_autoroles_class(interaction: discord.Interaction, ch: str):
     title = "Escoger un rol de clase"
-    description = "Para escoger un rol tienes que introducir /autoroles_class, el bot te " \
-                  "enviará un mensaje con menús desplegables donde podrás seleccionar el rol de tu clase.\n\n " \
+    description = "Para escoger un rol tienes que introducir </autoroles_class:1034611158050684998> " \
+                  "o hacer click en el comando. El bot te enviará un mensaje con menús desplegables " \
+                  "donde podrás seleccionar el rol de tu clase.\n\n " \
                   "Atención: Escoge el rol de tu clase a la primera porque sólo se puede escoger una vez. " \
                   "Para cambiarlo tendrás que solicitárselo a un moderador o administrador."
     tutorial_gif = discord.File("Media/tutorials/autoroles.gif", filename="autoroles.gif")
