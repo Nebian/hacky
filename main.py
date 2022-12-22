@@ -215,6 +215,8 @@ async def on_message(message):
 
     if random.randint(1, 200) == 69:
         await message.channel.send("Tu argumento no tiene sentido.", reference=message, mention_author=False)
+    elif random.randint(1, 300) == 69:
+        await message.channel.send("Puta Renfe.", mention_author=False)
 
     await bot.process_commands(message)
 
