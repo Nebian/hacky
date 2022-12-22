@@ -13,7 +13,7 @@ with open("config.json") as file:
 with open("Data/roles.json") as file:
     roles_json = json.load(file)
 
-bot = commands.Bot(command_prefix='¡', owner_id=295498594604154890, intents=discord.Intents.all())
+bot = commands.Bot(command_prefix='$', owner_id=295498594604154890, intents=discord.Intents.all())
 
 status = ['Hackeando el ITB']
 MANAGEMENT_CHANNEL = 1034529648857595914
@@ -165,7 +165,9 @@ class ThematicRoles(discord.ui.Select):
             discord.SelectOption(label="Birras", emoji="🍻",
                                  description="This role will allow other users to mention you."),
             discord.SelectOption(label="Furro", emoji="<furro:1054413958687228027>",
-                                 description="This role will allow you to see the Furros channel.")
+                                 description="This role will allow you to see the Furros channel."),
+            discord.SelectOption(label="Maricón", emoji="🏳️‍🌈",
+                                 description="This role proclaims that you are Maricón.")
         ]
         super().__init__(placeholder="Roles", max_values=4, min_values=1, options=options)
 
@@ -300,4 +302,4 @@ async def rolldice(interaction: discord.Interaction, dices: Literal['4', '6', '8
     await interaction.response.send_message(f"It\'s a **{random.randint(1, int(dices))}**!")
 
 
-bot.run(cfg['test-token'])
+bot.run(cfg['token'])
