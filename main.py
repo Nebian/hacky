@@ -5,16 +5,15 @@ import random
 from random import choice
 from typing import Literal
 import json
-
+import matplotlib.pyplot as plt
 
 with open("config.json") as file:
     cfg = json.load(file)
 
 with open("Data/roles.json") as file:
-    roles_clase = json.load(file)
+    roles_json = json.load(file)
 
-
-bot = commands.Bot(command_prefix='$', owner_id=295498594604154890, intents=discord.Intents.all())
+bot = commands.Bot(command_prefix='¡', owner_id=295498594604154890, intents=discord.Intents.all())
 
 status = ['Hackeando el ITB']
 MANAGEMENT_CHANNEL = 1034529648857595914
@@ -49,7 +48,7 @@ class ClassSelectASIX(discord.ui.Select):
             discord.SelectOption(label="ASIX-1C"),
             discord.SelectOption(label="ASIX-2A"),
             discord.SelectOption(label="ASIX-2B")
-            ]
+        ]
         super().__init__(placeholder="ASIX", max_values=1, min_values=1, options=options)
 
     async def callback(self, interaction: discord.Interaction):
@@ -69,7 +68,7 @@ class ClassSelectDAM(discord.ui.Select):
             discord.SelectOption(label="DAM-2B"),
             discord.SelectOption(label="DAMv-1A"),
             discord.SelectOption(label="DAMv-2A")
-            ]
+        ]
         super().__init__(placeholder="DAM", max_values=1, min_values=1, options=options)
 
     async def callback(self, interaction: discord.Interaction):
@@ -86,7 +85,7 @@ class ClassSelectDAW(discord.ui.Select):
         options = [
             discord.SelectOption(label="DAWe-1A"),
             discord.SelectOption(label="DAWe-2A")
-            ]
+        ]
         super().__init__(placeholder="DAW", max_values=1, min_values=1, options=options)
 
     async def callback(self, interaction: discord.Interaction):
@@ -103,7 +102,7 @@ class ClassSelectA3D(discord.ui.Select):
         options = [
             discord.SelectOption(label="A3D-1A"),
             discord.SelectOption(label="A3D-2A")
-            ]
+        ]
         super().__init__(placeholder="A3D", max_values=1, min_values=1, options=options)
 
     async def callback(self, interaction: discord.Interaction):
@@ -129,7 +128,7 @@ class ClassSelectSMX(discord.ui.Select):
             discord.SelectOption(label="SMX-2C"),
             discord.SelectOption(label="SMX-2D"),
             discord.SelectOption(label="SMX-2E")
-            ]
+        ]
         super().__init__(placeholder="SMX", max_values=1, min_values=1, options=options)
 
     async def callback(self, interaction: discord.Interaction):
@@ -167,7 +166,7 @@ class ThematicRoles(discord.ui.Select):
                                  description="This role will allow other users to mention you."),
             discord.SelectOption(label="Furro", emoji="<furro:1054413958687228027>",
                                  description="This role will allow you to see the Furros channel.")
-            ]
+        ]
         super().__init__(placeholder="Roles", max_values=4, min_values=1, options=options)
 
     async def callback(self, interaction: discord.Interaction):
@@ -232,12 +231,57 @@ async def show_schedule(interaction: discord.Interaction, schedule: str = None):
     if schedule is None:
         roles = interaction.user.roles
         for role in roles:
-            if str(role) in roles_clase['roles']:
-                print(role)
-                await interaction.response.send_message(file=discord.File(f'Media/schedules/schedule{role}.png'))
-                break
+            for grade in roles_json:
+                if grade in role.name and len(grade) == len(role.name) - 3:
+                    await interaction.response.send_message(file=discord.File(f'Media/schedules/schedule{role}.png'))
+                    break
     else:
         await interaction.response.send_message(file=discord.File(f'Media/schedules/schedule{schedule}.png'))
+
+
+def count_role_members():
+    role_counts = {}
+    guild = bot.get_guild(GUILD)
+    roles = guild.roles
+
+    for role in roles:
+        member_count = len(role.members)
+        role_counts[role.name] = member_count
+
+    grades = {'ASIX': 0, 'DAM': 0, 'DAMv': 0, 'DAWe': 0, 'A3D': 0, 'SMX': 0}
+    role_counts.update(grades)
+
+    for role in role_counts:
+        for grade in roles_json:
+            if grade in role and len(role) == len(grade) + 3:
+                role_counts[grade] += role_counts[role]
+
+    return role_counts
+
+
+@bot.tree.command(name="users_stats", description="Shows the number of members of each class")
+@app_commands.describe(graph="Type of graph to show the statistics on")
+async def users_stats(interaction: discord.Interaction, graph: Literal['Bars'] = None,
+                      rol: Literal['Otaku', 'Furro'] = None,
+                      grade: Literal['ASIX', 'DAM', 'DAMv', 'DAWe', 'A3D', 'SMX'] = None):
+    if graph is None and rol is None and grade is None:
+        guild = bot.get_guild(GUILD)
+        role_counts = count_role_members()
+
+        title = "Estadísticas del servidor"
+        description = f"**Total** - **{role_counts['@everyone']}**"
+        embed_counts = discord.Embed(title=title, description=description, color=0x004ffc)
+        for grade, roles in roles_json.items():
+            field_value = ""
+            for role in roles:
+                role_obj = discord.utils.get(guild.roles, name=role)
+                field_value += f"{role_obj.mention} - {role_counts[role]}\n"
+            embed_counts.add_field(name=f"**{grade}** - {role_counts[grade]}", value=field_value, inline=True)
+        logo = discord.File("Media/embeds/itb_logo_no_background.png", filename="itb_logo_no_background.png")
+        embed_counts.set_thumbnail(url="attachment://itb_logo_no_background.png")
+        await interaction.response.send_message(file=logo, embed=embed_counts)
+    else:
+        await interaction.response.send_message(f"Aún no está implementado, te esperas.")
 
 
 @bot.tree.command(name="sleepy", description="Sends a sleepy Tom gif")
@@ -256,4 +300,4 @@ async def rolldice(interaction: discord.Interaction, dices: Literal['4', '6', '8
     await interaction.response.send_message(f"It\'s a **{random.randint(1, int(dices))}**!")
 
 
-bot.run(cfg['token'])
+bot.run(cfg['test-token'])

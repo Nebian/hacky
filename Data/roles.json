@@ -1,11 +1,9 @@
 {
-  "roles": [
-    "ASIX-1A", "ASIX-1B", "ASIX-1C", "ASIX-2A", "ASIX-2B",
-    "DAM-1A", "DAM-2A", "DAM-2B",
-    "DAMv-1A", "DAMv-2A",
-    "DAWe-1A", "DAWe-2A",
-    "A3D-1A", "A3D-2A",
-    "SMX-1A", "SMX-1B", "SMX-1C", "SMX-1D", "SMX-1E", "SMX-1F",
-    "SMX-2A", "SMX-2B", "SMX-2C", "SMX-2D", "SMX-2E"
-  ]
+    "ASIX": ["ASIX-1A", "ASIX-1B", "ASIX-1C", "ASIX-2A", "ASIX-2B"],
+    "DAM": ["DAM-1A", "DAM-2A", "DAM-2B"],
+    "DAMv": ["DAMv-1A", "DAMv-2A"],
+    "SMX": ["SMX-1A", "SMX-1B", "SMX-1C", "SMX-1D", "SMX-1E", "SMX-1F",
+      "SMX-2A", "SMX-2B", "SMX-2C", "SMX-2D", "SMX-2E"],
+    "DAWe": ["DAWe-1A", "DAWe-2A"],
+    "A3D": ["A3D-1A", "A3D-2A"]
 }
