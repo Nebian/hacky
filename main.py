@@ -218,6 +218,12 @@ async def on_message(message):
         await message.channel.send("Tu argumento no tiene sentido.", reference=message, mention_author=False)
     elif random.randint(1, 300) == 69:
         await message.channel.send("Puta Renfe.", mention_author=False)
+    elif random.randint(1, 400) == 69:
+        with open("Media/ascii/train.txt", "r") as renfe:
+            rodalies = renfe.read()
+        await message.channel.send(rodalies)
+    elif random.randint(1, 1000) == 69:
+        await message.channel.send("Doxing user...", reference=message, mention_author=False)
 
     await bot.process_commands(message)
 
@@ -235,10 +241,15 @@ async def show_schedule(interaction: discord.Interaction, schedule: str = None):
         for role in roles:
             for grade in roles_json:
                 if grade in role.name and len(grade) == len(role.name) - 3:
-                    await interaction.response.send_message(file=discord.File(f'Media/schedules/schedule{role}.png'))
+                    await interaction.response.send_message(file=discord.File(f'Media/schedules/schedule{role}.jpg'))
                     break
     else:
         await interaction.response.send_message(file=discord.File(f'Media/schedules/schedule{schedule}.png'))
+
+
+@bot.tree.command(name="test", description="Placeholder for testing commands")
+async def test(interaction: discord.Interaction):
+    await interaction.response.send_message('https://lh3.googleusercontent.com/u/1/drive-viewer/AFDK6gNQPSO2x1ITsYk9GBQ3jDwWc4QRXAmcOvmhuxw-SLQQbnfgLYVmpP3kszfOs8fxKIQqJM8rCJGJ6Dd2QTvUR_R1_J0K3Mz0FCNJZbLihok=w1920-h961')
 
 
 def count_role_members():
@@ -266,22 +277,51 @@ def count_role_members():
 async def users_stats(interaction: discord.Interaction, graph: Literal['Bars'] = None,
                       rol: Literal['Otaku', 'Furro'] = None,
                       grade: Literal['ASIX', 'DAM', 'DAMv', 'DAWe', 'A3D', 'SMX'] = None):
+    guild = bot.get_guild(GUILD)
+    role_counts = count_role_members()
     if graph is None and rol is None and grade is None:
-        guild = bot.get_guild(GUILD)
-        role_counts = count_role_members()
 
         title = "Estadísticas del servidor"
         description = f"**Total** - **{role_counts['@everyone']}**"
         embed_counts = discord.Embed(title=title, description=description, color=0x004ffc)
+
         for grade, roles in roles_json.items():
             field_value = ""
             for role in roles:
                 role_obj = discord.utils.get(guild.roles, name=role)
                 field_value += f"{role_obj.mention} - {role_counts[role]}\n"
             embed_counts.add_field(name=f"**{grade}** - {role_counts[grade]}", value=field_value, inline=True)
+
         logo = discord.File("Media/embeds/itb_logo_no_background.png", filename="itb_logo_no_background.png")
         embed_counts.set_thumbnail(url="attachment://itb_logo_no_background.png")
         await interaction.response.send_message(file=logo, embed=embed_counts)
+
+    elif rol is None and grade is None:
+        fig, ax = plt.subplots()
+
+        grades = []
+        counts = []
+        colors = []
+
+        for grade in roles_json.items():
+            grades.append(grade)
+            counts.append(role_counts[grade])
+            role_obj = discord.utils.get(guild.roles, name=grade[0])
+            colors.append(role_obj.color)
+
+        fruits = ['apple', 'blueberry', 'cherry', 'orange']
+        countsaa = [40, 100, 30, 55]
+        bar_labels = ['red', 'blue', '_red', 'orange']
+        bar_colors = ['tab:red', 'tab:blue', 'tab:red', 'tab:orange']
+
+        ax.bar(grades, counts, label=bar_labels, color=bar_colors)
+
+        ax.set_ylabel('fruit supply')
+        ax.set_title('Fruit supply by kind and color')
+        ax.legend(title='Fruit color')
+
+        plt.savefig('plot.png')
+
     else:
         await interaction.response.send_message(f"Aún no está implementado, te esperas.")
 
