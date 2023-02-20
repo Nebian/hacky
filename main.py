@@ -15,7 +15,7 @@ with open("config.json") as file:
 with open("Data/roles.json") as file:
     roles_json = json.load(file)
 
-bot = commands.Bot(command_prefix='¡', owner_id=295498594604154890, intents=discord.Intents.all())
+bot = commands.Bot(command_prefix='$', owner_id=295498594604154890, intents=discord.Intents.all())
 
 status = ['Hackeando el ITB']
 MANAGEMENT_CHANNEL = 1034529648857595914
@@ -335,4 +335,4 @@ async def rolldice(interaction: discord.Interaction, dices: Literal['4', '6', '8
     await interaction.response.send_message(f"It\'s a **{random.randint(1, int(dices))}**!")
 
 
-bot.run(cfg['test-token'])
+bot.run(cfg['token'])
