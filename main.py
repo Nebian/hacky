@@ -247,11 +247,6 @@ async def show_schedule(interaction: discord.Interaction, schedule: str = None):
         await interaction.response.send_message(file=discord.File(f'Media/schedules/schedule{schedule}.png'))
 
 
-@bot.tree.command(name="test", description="Placeholder for testing commands")
-async def test(interaction: discord.Interaction):
-    await interaction.response.send_message('https://lh3.googleusercontent.com/u/1/drive-viewer/AFDK6gNQPSO2x1ITsYk9GBQ3jDwWc4QRXAmcOvmhuxw-SLQQbnfgLYVmpP3kszfOs8fxKIQqJM8rCJGJ6Dd2QTvUR_R1_J0K3Mz0FCNJZbLihok=w1920-h961')
-
-
 def count_role_members():
     role_counts = {}
     guild = bot.get_guild(GUILD)
