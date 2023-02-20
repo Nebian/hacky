@@ -4,8 +4,6 @@ from discord import app_commands
 import random
 from random import choice
 from typing import Literal
-from PIL import ImageColor
-import webcolors
 import json
 import matplotlib.pyplot as plt
 
