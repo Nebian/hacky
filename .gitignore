@@ -133,3 +133,10 @@ dmypy.json
 
 # Other files
 LICENSE
+/.idea/.gitignore
+/.idea/dictionaries/ianbu.xml
+/.idea/hacky.iml
+/.idea/misc.xml
+/.idea/modules.xml
+/.idea/inspectionProfiles/profiles_settings.xml
+/.idea/vcs.xml
