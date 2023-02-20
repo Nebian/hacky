@@ -4,6 +4,8 @@ from discord import app_commands
 import random
 from random import choice
 from typing import Literal
+from PIL import ImageColor
+import webcolors
 import json
 import matplotlib.pyplot as plt
 
@@ -13,7 +15,7 @@ with open("config.json") as file:
 with open("Data/roles.json") as file:
     roles_json = json.load(file)
 
-bot = commands.Bot(command_prefix='$', owner_id=295498594604154890, intents=discord.Intents.all())
+bot = commands.Bot(command_prefix='¡', owner_id=295498594604154890, intents=discord.Intents.all())
 
 status = ['Hackeando el ITB']
 MANAGEMENT_CHANNEL = 1034529648857595914
@@ -280,12 +282,12 @@ async def users_stats(interaction: discord.Interaction, graph: Literal['Bars'] =
         description = f"**Total** - **{role_counts['@everyone']}**"
         embed_counts = discord.Embed(title=title, description=description, color=0x004ffc)
 
-        for grade, roles in roles_json.items():
+        for ciclo, roles in roles_json.items():
             field_value = ""
             for role in roles:
                 role_obj = discord.utils.get(guild.roles, name=role)
                 field_value += f"{role_obj.mention} - {role_counts[role]}\n"
-            embed_counts.add_field(name=f"**{grade}** - {role_counts[grade]}", value=field_value, inline=True)
+            embed_counts.add_field(name=f"**{ciclo}** - {role_counts[ciclo]}", value=field_value, inline=True)
 
         logo = discord.File("Media/embeds/itb_logo_no_background.png", filename="itb_logo_no_background.png")
         embed_counts.set_thumbnail(url="attachment://itb_logo_no_background.png")
@@ -298,24 +300,20 @@ async def users_stats(interaction: discord.Interaction, graph: Literal['Bars'] =
         counts = []
         colors = []
 
-        for grade in roles_json.items():
-            grades.append(grade)
-            counts.append(role_counts[grade])
-            role_obj = discord.utils.get(guild.roles, name=grade[0])
-            colors.append(role_obj.color)
+        for ciclo, role in roles_json.items():
+            grades.append(ciclo)
+            counts.append(role_counts[ciclo])
+            role_obj = discord.utils.get(guild.roles, name=role[0])
+            c = str(role_obj.color)
+            colors.append(c)
 
-        fruits = ['apple', 'blueberry', 'cherry', 'orange']
-        countsaa = [40, 100, 30, 55]
-        bar_labels = ['red', 'blue', '_red', 'orange']
-        bar_colors = ['tab:red', 'tab:blue', 'tab:red', 'tab:orange']
+        ax.bar(grades, counts, label=grades, color=colors)
+        ax.set_ylabel('num')
+        ax.set_title('Miembros de cada ciclo')
+        ax.legend(title='Ciclos')
+        plt.savefig('Media/plots/plot.png')
 
-        ax.bar(grades, counts, label=bar_labels, color=bar_colors)
-
-        ax.set_ylabel('fruit supply')
-        ax.set_title('Fruit supply by kind and color')
-        ax.legend(title='Fruit color')
-
-        plt.savefig('plot.png')
+        await interaction.response.send_message(file=discord.File(f'Media/plots/plot.png'))
 
     else:
         await interaction.response.send_message(f"Aún no está implementado, te esperas.")
@@ -337,4 +335,4 @@ async def rolldice(interaction: discord.Interaction, dices: Literal['4', '6', '8
     await interaction.response.send_message(f"It\'s a **{random.randint(1, int(dices))}**!")
 
 
-bot.run(cfg['token'])
+bot.run(cfg['test-token'])
