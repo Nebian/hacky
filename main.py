@@ -158,18 +158,18 @@ async def autoroles_class(interaction: discord.Interaction):
 class ThematicRoles(discord.ui.Select):
     def __init__(self):
         options = [
+            discord.SelectOption(label="Minecraft", emoji="<minecraft:1079053853829365860>",
+                                 description="This role allows you to receive notifications about minecraft."),
+            discord.SelectOption(label="Birras", emoji="🍻",
+                                 description="This role allows other users to mention you."),
             discord.SelectOption(label="Gamer", emoji="🎮",
                                  description="This role allows you to see the gamer channel."),
             discord.SelectOption(label="Otaku", emoji="🚿",
                                  description="This role allows you to see the anime channel."),
-            discord.SelectOption(label="Birras", emoji="🍻",
-                                 description="This role allows other users to mention you."),
             discord.SelectOption(label="Furro", emoji="<furro:1054413958687228027>",
                                  description="This role allows you to see the Furros channel."),
             discord.SelectOption(label="Maricón", emoji="🏳️‍🌈",
-                                 description="This role proclaims that you are Maricón."),
-            discord.SelectOption(label="Minecraft", emoji="<minecraft:1079053956975693916>",
-                                 description="This role allows you to receive notifications about minecraft.")
+                                 description="This role proclaims that you are Maricón.")
         ]
         super().__init__(placeholder="Roles", max_values=6, min_values=1, options=options)
 
