@@ -1,11 +1,16 @@
 import discord
 from discord.ext import commands, tasks
+from discord.utils import get
 from discord import app_commands
+from discord import FFmpegPCMAudio
 import random
 from random import choice
 from typing import Literal
 import json
 import matplotlib.pyplot as plt
+import os
+from gtts import gTTS
+import asyncio
 
 with open("config.json") as file:
     cfg = json.load(file)
@@ -228,6 +233,37 @@ async def on_message(message):
         await message.channel.send("Doxing user...", reference=message, mention_author=False)
 
     await bot.process_commands(message)
+
+
+def get_salute_audio(user):
+    audio_path = os.path.join(".", "Media/audio")
+    text = f"Hola {user}, te estoy vigilando, cuidado con lo que haces o te doxeo."
+    print(user)
+    tts = gTTS(text, lang="es")
+    audio_file = os.path.join(audio_path, f"{user}.mp3")
+    tts.save(audio_file)
+    return audio_file
+
+@bot.event
+async def on_voice_state_update(member, before, after):
+    if not before.channel and after.channel:  # User joined a channel
+        channel = after.channel
+        voice_client = get(bot.voice_clients, guild=member.guild)
+        if voice_client and not voice_client.is_connected():
+            if voice_client.channel != channel:
+                await voice_client.move_to(channel)
+        else:
+            voice_client = await channel.connect()
+        audio_file = get_salute_audio(member.name)
+        if os.path.exists(audio_file):
+            audio_source = FFmpegPCMAudio(audio_file, executable="ffmpeg")
+            voice_client.play(audio_source)
+            while voice_client.is_playing():
+                await asyncio.sleep(0.1)
+            await asyncio.sleep(10)
+            await voice_client.disconnect(force=False)
+        else:
+            print(f"Error: audio file not found for {member.nick}.")
 
 
 @bot.tree.command(name="ping", description="Prints the ping between discord and bot server")
