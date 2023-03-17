@@ -238,8 +238,7 @@ async def on_message(message):
 def get_salute_audio(user):
     audio_path = os.path.join(".", "Media/audio")
     text = f"Hola {user}, te estoy vigilando, cuidado con lo que haces o te doxeo."
-    print(user)
-    tts = gTTS(text, lang="es")
+    tts = gTTS(text, lang="de")
     audio_file = os.path.join(audio_path, f"saludo.mp3")
     tts.save(audio_file)
     return audio_file
@@ -260,7 +259,7 @@ async def on_voice_state_update(member, before, after):
             voice_client.play(audio_source)
             while voice_client.is_playing():
                 await asyncio.sleep(0.1)
-            await asyncio.sleep(10)
+            await asyncio.sleep(1)
             await voice_client.disconnect(force=False)
         else:
             print(f"Error: audio file not found for {member.nick}.")
