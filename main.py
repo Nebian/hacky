@@ -236,7 +236,8 @@ async def on_message(message):
 
 
 def get_salute_audio(user):
-    audio_path = os.path.join(".", "Media/audio")
+    audio_path = os.path.join(".", "Media")
+    audio_path = os.path.join(audio_path, "audio")
     text = f"Hola {user}, te estoy vigilando, cuidado con lo que haces o te doxeo."
     tts = gTTS(text, lang="de")
     audio_file = os.path.join(audio_path, f"saludo.mp3")
@@ -245,24 +246,16 @@ def get_salute_audio(user):
 
 @bot.event
 async def on_voice_state_update(member, before, after):
-    if not before.channel and after.channel:  # User joined a channel
+    if after.channel is not None:  # user joined a voice channel
         channel = after.channel
-        voice_client = get(bot.voice_clients, guild=member.guild)
-        if voice_client and not voice_client.is_connected():
-            if voice_client.channel != channel:
-                await voice_client.move_to(channel)
-        else:
-            voice_client = await channel.connect()
+        voice_client = await channel.connect()
         audio_file = get_salute_audio(member.name)
-        if os.path.exists(audio_file):
-            audio_source = FFmpegPCMAudio(audio_file, executable="ffmpeg")
-            voice_client.play(audio_source)
-            while voice_client.is_playing():
-                await asyncio.sleep(0.1)
-            await asyncio.sleep(1)
-            await voice_client.disconnect(force=False)
-        else:
-            print(f"Error: audio file not found for {member.nick}.")
+        audio_source = FFmpegPCMAudio(audio_file, executable="ffmpeg")
+        voice_client.play(audio_source)
+        while voice_client.is_playing():
+            await asyncio.sleep(0.1)
+        await asyncio.sleep(1)
+        await voice_client.disconnect(force=True)
 
 
 @bot.tree.command(name="ping", description="Prints the ping between discord and bot server")
