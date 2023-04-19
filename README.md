@@ -1,2 +1,2 @@
 # Hacky
-Discord Python Bot
+discord Python Bot
